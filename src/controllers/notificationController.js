@@ -3,16 +3,20 @@ const router = express.Router();
 
 const notificationService = require("../services/notificationService");
 
-router.post("/send", (req, res) => {
-  const correlationId = req.correlationId;
+// POST /v1/notifications/send
+router.post("/send", (req, res, next) => {
+  try {
+    notificationService.sendNotification(req.body, req.correlationId);
 
-  notificationService.sendNotification(req.body, correlationId);
+    res.json({
+      code: 200,
+      message: "Notification sent",
+      correlationId: req.correlationId
+    });
 
-  res.json({
-    code: 200,
-    message: "Notification sent",
-    correlationId
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

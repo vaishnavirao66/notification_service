@@ -1,3 +1,6 @@
+const maskPII = require("../utils/mask");
+const metrics = require("../utils/metrics");
+
 function sendNotification(request, correlationId) {
   const maskedRecipient = maskPII(request.recipient);
 
@@ -41,3 +44,7 @@ function sendNotification(request, correlationId) {
   console.log(JSON.stringify(log));
   metrics.incrementSent();
 }
+
+module.exports = {
+  sendNotification
+};
